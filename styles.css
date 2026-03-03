@@ -1,0 +1,223 @@
+/*
+ * Hoja de estilos para el cronograma del curso "Cuidados Intensivos Respiratorios".
+ * La paleta cromática se inspira en las cronogramas previos de la residencia:
+ * tonalidades de azul profundo para el encabezado y acentos rosados para destacar el examen.
+ * La tipografía principal es Poppins por su legibilidad y elegancia.
+ */
+
+/* Variables CSS para facilitar cambios de color y tipografía */
+:root {
+    --primary-color: #0b3d91;        /* azul oscuro para encabezado */
+    --secondary-color: #083873;      /* tono complementario para detalles */
+    --accent-color: #c62828;         /* rojo oscuro para resaltar el examen */
+    --background-color: #f7fafc;     /* gris muy claro para fondo general */
+    --surface-color: #ffffff;        /* blanco para tarjetas y tablas */
+    --text-color: #333333;           /* texto principal */
+    --text-secondary: #555555;       /* texto secundario */
+    --row-alt-color: #f0f4f8;        /* color alterno para filas impares */
+    --border-radius: 8px;
+    --font-family: 'Poppins', sans-serif;
+}
+
+/* Reset básico y tipografía global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Encabezado principal */
+.hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #ffffff;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.hero-inner {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.course-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.course-subtitle,
+.course-details {
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Sección de resumen */
+.summary {
+    max-width: 960px;
+    margin: 2rem auto;
+    background-color: var(--surface-color);
+    padding: 1.5rem 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.summary-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.summary-list li {
+    flex: 1 1 200px;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.summary-list li strong {
+    color: var(--text-color);
+}
+
+/* Tabla de cronograma */
+.table-container {
+    overflow-x: auto;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+.schedule-table th {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.schedule-table tbody tr:nth-child(odd) {
+    background-color: var(--row-alt-color);
+}
+
+.schedule-table tbody tr.review {
+    background-color: #fff5e6;
+    color: var(--text-color);
+}
+
+.schedule-table tbody tr.exam {
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.schedule-table tbody tr.holiday {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    font-weight: 500;
+    text-align: center;
+}
+
+.schedule-table tbody td strong {
+    font-weight: 600;
+}
+
+/* Responsividad: convertir tabla en tarjetas en pantallas pequeñas */
+@media (max-width: 640px) {
+    .schedule-table thead {
+        display: none;
+    }
+    .schedule-table, .schedule-table tbody, .schedule-table tr, .schedule-table td {
+        display: block;
+        width: 100%;
+    }
+    .schedule-table tr {
+        margin-bottom: 1rem;
+        border-radius: var(--border-radius);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        background-color: var(--surface-color);
+    }
+    .schedule-table tr.review {
+        background-color: #fff5e6;
+    }
+    .schedule-table tr.exam {
+        background-color: var(--accent-color);
+    }
+    .schedule-table tr.holiday {
+        background-color: #e3f2fd;
+    }
+    .schedule-table td {
+        border: none;
+        padding: 0.5rem 0.75rem;
+        position: relative;
+    }
+    .schedule-table td::before {
+        content: attr(data-label) ": ";
+        font-weight: 600;
+        color: var(--primary-color);
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+}
+
+/* Pie de página */
+.page-footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Estilos para impresión */
+@media print {
+    body {
+        background-color: #ffffff;
+        color: #000000;
+    }
+    .hero {
+        background: none;
+        color: #000000;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #000;
+    }
+    .summary,
+    .schedule-table,
+    .page-footer {
+        box-shadow: none;
+        background: #ffffff;
+    }
+    .schedule-table th {
+        background: #e0e0e0;
+        color: #000000;
+    }
+    .schedule-table tr.exam {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    .schedule-table tr.holiday {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+    @page {
+        margin: 1.5cm;
+    }
+}
