@@ -9,7 +9,10 @@
 :root {
     --primary-color: #0b3d91;        /* azul oscuro para encabezado */
     --secondary-color: #083873;      /* tono complementario para detalles */
+    --hero-third: #155e75;
     --accent-color: #c62828;         /* rojo oscuro para resaltar el examen */
+    --brand-green: #0f766e;
+    --brand-green-dark: #115e59;
     --background-color: #f7fafc;     /* gris muy claro para fondo general */
     --surface-color: #ffffff;        /* blanco para tarjetas y tablas */
     --text-color: #333333;           /* texto principal */
@@ -17,6 +20,7 @@
     --row-alt-color: #f0f4f8;        /* color alterno para filas impares */
     --border-radius: 8px;
     --font-family: 'Poppins', sans-serif;
+    --shadow-soft: 0 12px 30px rgba(8, 45, 92, 0.12);
 }
 
 /* Reset básico y tipografía global */
@@ -29,17 +33,32 @@
 body {
     font-family: var(--font-family);
     color: var(--text-color);
-    background-color: var(--background-color);
+    background:
+      radial-gradient(circle at 10% 8%, #dbeafe 0%, transparent 34%),
+      radial-gradient(circle at 88% 14%, #dcfce7 0%, transparent 30%),
+      var(--background-color);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
 }
 
 /* Encabezado principal */
 .hero {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(125deg, var(--primary-color), var(--secondary-color) 50%, var(--hero-third));
     color: #ffffff;
     padding: 3rem 1rem;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto auto;
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.18), transparent 65%);
+    pointer-events: none;
 }
 
 .hero-inner {
@@ -48,6 +67,7 @@ body {
 }
 
 .course-title {
+    font-family: "Source Serif 4", serif;
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
@@ -60,6 +80,46 @@ body {
     opacity: 0.9;
 }
 
+.hero-actions {
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: #ffffff;
+    color: #0b3d91;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background: linear-gradient(120deg, #16a34a, var(--brand-green));
+    color: #ffffff;
+}
+
+.btn-ghost {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
 /* Sección de resumen */
 .summary {
     max-width: 960px;
@@ -67,7 +127,7 @@ body {
     background-color: var(--surface-color);
     padding: 1.5rem 2rem;
     border-radius: var(--border-radius);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-soft);
 }
 
 .summary-list {
@@ -81,6 +141,10 @@ body {
     flex: 1 1 200px;
     font-size: 0.95rem;
     color: var(--text-secondary);
+    background: #f8fbff;
+    border: 1px solid #e3ecf6;
+    border-radius: 10px;
+    padding: 0.7rem 0.75rem;
 }
 
 .summary-list li strong {
@@ -88,8 +152,15 @@ body {
 }
 
 /* Tabla de cronograma */
+.schedule {
+    max-width: 960px;
+    margin: 0 auto 2rem;
+}
+
 .table-container {
     overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
 }
 
 .schedule-table {
@@ -98,7 +169,7 @@ body {
     background-color: var(--surface-color);
     border-radius: var(--border-radius);
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: none;
 }
 
 .schedule-table th,
@@ -106,6 +177,7 @@ body {
     padding: 0.75rem 1rem;
     text-align: left;
     border-bottom: 1px solid #e1e8ed;
+    vertical-align: middle;
 }
 
 .schedule-table th {
@@ -118,6 +190,14 @@ body {
 
 .schedule-table tbody tr:nth-child(odd) {
     background-color: var(--row-alt-color);
+}
+
+.schedule-table tbody tr {
+    transition: background-color 180ms ease;
+}
+
+.schedule-table tbody tr:hover {
+    background-color: #e9f4ff;
 }
 
 .schedule-table tbody tr.review {
@@ -180,8 +260,57 @@ body {
     color: #b45309;
 }
 
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fab-top {
+    position: fixed;
+    right: 20px;
+    bottom: 18px;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(120deg, var(--brand-green), var(--brand-green-dark));
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 24px rgba(15, 118, 110, 0.35);
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.fab-top.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
 /* Responsividad: convertir tabla en tarjetas en pantallas pequeñas */
 @media (max-width: 640px) {
+    .hero {
+        padding-top: 2.2rem;
+    }
+
+    .hero-actions {
+        justify-content: stretch;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
     .schedule-table thead {
         display: none;
     }
@@ -215,6 +344,11 @@ body {
         color: var(--primary-color);
         display: block;
         margin-bottom: 0.25rem;
+    }
+
+    .fab-top {
+        right: 14px;
+        bottom: 14px;
     }
 }
 

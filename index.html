@@ -6,7 +6,7 @@
     <title>Cronograma • Cuidados Intensivos Respiratorios</title>
     <!-- Importar una tipografía legible desde Google Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Source+Serif+4:wght@700&display=swap" rel="stylesheet">
     <!-- Enlazar hoja de estilos externa -->
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -17,11 +17,16 @@
             <h1 class="course-title">Cuidados Intensivos Respiratorios</h1>
             <p class="course-subtitle">16 de marzo – 30 de abril de 2026</p>
             <p class="course-details">3 clases por semana (lunes, miércoles y viernes) &middot; Excluye Semana Santa</p>
+            <div class="hero-actions" aria-label="Acciones rápidas">
+                <a class="btn btn-primary" href="#resumen">Ver resumen</a>
+                <a class="btn btn-secondary" href="#cronograma">Ir al cronograma</a>
+                <button class="btn btn-ghost" type="button" onclick="window.print()">Exportar PDF</button>
+            </div>
         </div>
     </header>
     <main>
         <!-- Resumen general del programa -->
-        <section id="resumen" class="summary" aria-labelledby="summary-title">
+        <section id="resumen" class="summary reveal" aria-labelledby="summary-title">
             <h2 id="summary-title">Resumen del curso</h2>
             <ul class="summary-list">
                 <li><strong>Total de sesiones:</strong> 18 (17 clases + examen final)</li>
@@ -32,7 +37,7 @@
         </section>
 
         <!-- Tabla de cronograma de clases -->
-        <section id="cronograma" class="schedule" aria-labelledby="schedule-title">
+        <section id="cronograma" class="schedule reveal" aria-labelledby="schedule-title">
             <h2 id="schedule-title">Cronograma de clases</h2>
             <p class="assistive-text">La siguiente tabla presenta las sesiones con fecha, dia, hora, tema, actividad y medico tutor responsable. El examen final se resalta en color para su facil identificacion.</p>
             <div class="table-container">
@@ -239,8 +244,38 @@
             </div>
         </section>
     </main>
+        <button class="fab-top" id="fab-top" type="button" aria-label="Volver arriba">↑</button>
     <footer class="page-footer">
         <p>© 2026 Programa de Residencia en Cuidados Intensivos. Documento generado para fines académicos.</p>
     </footer>
+        <script>
+            (function () {
+                const revealEls = document.querySelectorAll('.reveal');
+                const toTopBtn = document.getElementById('fab-top');
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                revealEls.forEach((el) => observer.observe(el));
+
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 260) {
+                        toTopBtn.classList.add('show');
+                    } else {
+                        toTopBtn.classList.remove('show');
+                    }
+                });
+
+                toTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            })();
+        </script>
 </body>
 </html>
