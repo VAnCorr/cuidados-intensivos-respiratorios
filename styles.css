@@ -329,12 +329,17 @@ body {
 }
 
 .reveal {
+    opacity: 1;
+    transform: none;
+}
+
+.js .reveal {
     opacity: 0;
     transform: translateY(16px);
     transition: opacity 700ms ease, transform 700ms ease;
 }
 
-.reveal.visible {
+.js .reveal.visible {
     opacity: 1;
     transform: translateY(0);
 }

@@ -270,19 +270,24 @@
     </footer>
         <script>
             (function () {
+                document.documentElement.classList.add('js');
                 const revealEls = document.querySelectorAll('.reveal');
                 const toTopBtn = document.getElementById('fab-top');
 
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('visible');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.15 });
+                if (!('IntersectionObserver' in window)) {
+                    revealEls.forEach((el) => el.classList.add('visible'));
+                } else {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.15 });
 
-                revealEls.forEach((el) => observer.observe(el));
+                    revealEls.forEach((el) => observer.observe(el));
+                }
 
                 window.addEventListener('scroll', () => {
                     if (window.scrollY > 260) {
