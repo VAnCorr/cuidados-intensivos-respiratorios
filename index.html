@@ -262,6 +262,7 @@
                     </tbody>
                 </table>
             </div>
+            <div id="mobile-cards" class="mobile-cards" aria-label="Cronograma en formato movil"></div>
         </section>
     </main>
         <button class="fab-top" id="fab-top" type="button" aria-label="Volver arriba">↑</button>
@@ -273,6 +274,62 @@
                 document.documentElement.classList.add('js');
                 const revealEls = document.querySelectorAll('.reveal');
                 const toTopBtn = document.getElementById('fab-top');
+                const mobileCards = document.getElementById('mobile-cards');
+
+                function buildMobileCards() {
+                    if (!mobileCards) {
+                        return;
+                    }
+
+                    const rows = Array.from(document.querySelectorAll('.schedule-table tbody tr'));
+                    mobileCards.innerHTML = '';
+
+                    rows.forEach((row) => {
+                        const isHoliday = row.classList.contains('holiday');
+                        const isReview = row.classList.contains('review');
+                        const isExam = row.classList.contains('exam');
+
+                        if (isHoliday) {
+                            const holidayCell = row.querySelector('td');
+                            const holidayCard = document.createElement('article');
+                            holidayCard.className = 'session-card holiday-card';
+                            holidayCard.innerHTML = '<p>' + (holidayCell ? holidayCell.textContent.trim() : 'Receso academico') + '</p>';
+                            mobileCards.appendChild(holidayCard);
+                            return;
+                        }
+
+                        const cells = Array.from(row.querySelectorAll('td'));
+                        if (cells.length < 8) {
+                            return;
+                        }
+
+                        const session = cells[0].textContent.trim();
+                        const date = cells[1].textContent.trim();
+                        const day = cells[2].textContent.trim();
+                        const time = cells[3].textContent.trim();
+                        const topic = cells[4].textContent.trim();
+                        const activity = cells[5].textContent.trim();
+                        const tutor = cells[6].textContent.trim();
+                        const resident = cells[7].textContent.trim();
+
+                        const card = document.createElement('article');
+                        card.className = 'session-card' + (isReview ? ' review-card' : '') + (isExam ? ' exam-card' : '');
+                        card.innerHTML =
+                            '<div class="card-top">' +
+                                '<span class="card-session">Sesion ' + session + '</span>' +
+                                '<span class="card-time">' + time + '</span>' +
+                            '</div>' +
+                            '<p class="card-date">' + day + ' · ' + date + '</p>' +
+                            '<p class="card-topic">' + topic + '</p>' +
+                            '<p class="card-meta"><strong>Actividad:</strong> ' + activity + '</p>' +
+                            '<p class="card-meta"><strong>Tutor:</strong> ' + tutor + '</p>' +
+                            '<p class="card-meta"><strong>Residente:</strong> ' + resident + '</p>';
+
+                        mobileCards.appendChild(card);
+                    });
+                }
+
+                buildMobileCards();
 
                 if (!('IntersectionObserver' in window)) {
                     revealEls.forEach((el) => el.classList.add('visible'));
